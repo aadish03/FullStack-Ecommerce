@@ -5,7 +5,6 @@ import Message from "../components/Message";
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { createOrder } from "../actions/orderActions";
-
 import { ORDER_CREATE_RESET } from "../constants/orderConstants";
 
 const PlaceOrderScreen = () => {
@@ -20,6 +19,7 @@ const PlaceOrderScreen = () => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
 
+  // Calculate prices
   const itemsPrice = addDecimals(
     cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   );
@@ -42,7 +42,7 @@ const PlaceOrderScreen = () => {
       navigate(`/order/${order._id}`);
       dispatch({ type: ORDER_CREATE_RESET });
     }
-  }, [success, navigate, order]);
+  }, [success, navigate, dispatch, order]);
 
   const placeOrder = () => {
     dispatch(
@@ -50,10 +50,10 @@ const PlaceOrderScreen = () => {
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
-        itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
-        totalPrice: cart.totalPrice,
+        itemsPrice: itemsPrice,
+        shippingPrice: shippingPrice,
+        taxPrice: taxPrice,
+        totalPrice: totalPrice,
       })
     );
   };
